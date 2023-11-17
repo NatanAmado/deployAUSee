@@ -9,6 +9,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        color: rgb(255, 255, 255);
     }
 
     .login-form .form-group {
@@ -23,12 +24,16 @@
             border-radius: 4px;
     }
 
+    .makeyellow {
+        color: #dba309;
+    }
+
         
 
 </style>
 
 <div class="login-container">
-    <h2>Login</h2>
+    <h2 class="makeyellow">Login</h2>
     <form method="post" class="login-form">
         {% csrf_token %}
         {{ form.as_p }}
