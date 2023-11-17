@@ -21,7 +21,7 @@
     margin-bottom: 50px;
   }
   .search-input {
-    
+
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -34,7 +34,7 @@
     border: 1px solid #dba309;
     border-radius: 5px;
     cursor: pointer;
-    
+
   }
   .search-button:hover {
     background-color: #dba309;
@@ -44,7 +44,7 @@
     margin-top: 30px;
     margin-bottom: 15px;
     text-align: center;
-    
+
   }
   .row {
     display: flex;
@@ -103,14 +103,14 @@
     padding-left: 10%;
     padding-right: 10%;
     min-width: 190px;
-     
-    
+
+
   }
   .card a:hover {
     background-color: #dba309;
     color: #000000;
   }
-  
+
   .card .level-holder {
     background-color: #000000;
     color: #dba309;
@@ -147,53 +147,53 @@
     margin-bottom: 50px;
   }
 
-  
+
   .filter-btn {
-    border-radius: 20px; 
-    padding: 10px 20px; 
-    font-size: 16px; 
-    font-weight: bold; 
-    margin: 0 10px; 
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0 10px;
     cursor: pointer;
-    transition: all 0.3s ease; 
+    transition: all 0.3s ease;
     border: 2px solid transparent;
-     
+
   }
 
   .all-courses-btn {
     background-color: #1A1A1A;
-    color: #FFFFFF; 
-    
+    color: #FFFFFF;
+
   }
 
-  
+
   .level-100-btn {
-    background-color: #1A1A1A; 
-    color: #F0E68C; 
+    background-color: #1A1A1A;
+    color: #F0E68C;
   }
 
-  
+
   .level-200-btn {
-    background-color: #1A1A1A; 
-    color: #ADD8E6; 
+    background-color: #1A1A1A;
+    color: #ADD8E6;
   }
 
- 
+
   .level-300-btn {
-    background-color: #1A1A1A; 
-    color: #90EE90; 
-    
+    background-color: #1A1A1A;
+    color: #90EE90;
+
   }
 
-  
+
   .filter-btn:hover {
     box-shadow: 0 0 10px #dba309;
-     
+
   }
 
-  
+
   .filter-btn.active {
-    box-shadow: 0 0 5px #dba309; 
+    box-shadow: 0 0 5px #dba309;
   }
 
 
@@ -218,7 +218,7 @@
       margin: 5px 0;
     }
   }
-  
+
 
 </style>
 
@@ -240,10 +240,10 @@
     <button class="filter-btn level-200-btn" onclick="filterCourses('200')">200</button>
     <button class="filter-btn level-300-btn" onclick="filterCourses('300')">300</button>
   </div>
-  
 
-  
-  
+
+
+
   <div class="row">
     {% for course in level_100_courses %}
     <div class="col-md-4 mb-4">
@@ -252,11 +252,11 @@
           <a class="level-holder">&nbsp;{{course.level}}&nbsp;</a>
           <h5 class="card-title">{{ course.name }} </h5>
           <h5 class="card-code">{{ course.code }}</h5>
-          <p>Average Rating: 
+          <p>Average Rating:
             <span class="starRating" data-rating="{{ course.average_rating|floatformat:1 }}"></span>
             <span>{{ course.average_rating|floatformat:1 }}/5.0</span>
           </p>
-          
+
           <p class="descrip">{{ course.description|truncatechars:100 }}</p>
           <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
         </div>
@@ -264,11 +264,11 @@
     </div>
     {% endfor %}
   </div>
- 
- 
 
-  
-  
+
+
+
+
   <div class="row">
     {% for course in level_200_courses %}
     <div class="col-md-4 mb-4">
@@ -277,19 +277,23 @@
           <a class="level-holder">&nbsp;{{course.level}}&nbsp;</a>
           <h5 class="card-title">{{ course.name }} </h5>
           <h5 class="card-code">{{ course.code }}</h5>
-          <p>Average Rating: {{ course.average_rating|floatformat:1 }}/5.0</p>
-          <p>{{ course.description|truncatechars:100 }}</p>
+          <p>Average Rating:
+            <span class="starRating" data-rating="{{ course.average_rating|floatformat:1 }}"></span>
+            <span>{{ course.average_rating|floatformat:1 }}/5.0</span>
+          </p>
+
+          <p class="descrip">{{ course.description|truncatechars:100 }}</p>
           <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
         </div>
       </div>
-      
+
     </div>
     {% endfor %}
-  
-  
 
-  
-  
+
+
+
+
   <div class="row">
     {% for course in level_300_courses %}
     <div class="col-md-4 mb-4">
@@ -298,17 +302,21 @@
           <a class="level-holder">&nbsp;{{course.level}}&nbsp;</a>
           <h5 class="card-title">{{ course.name }} </h5>
           <h5 class="card-code">{{ course.code }}</h5>
-          <p>Average Rating: {{ course.average_rating|floatformat:1 }}/5.0</p>
+          <p>Average Rating:
+            <span class="starRating" data-rating="{{ course.average_rating|floatformat:1 }}"></span>
+            <span>{{ course.average_rating|floatformat:1 }}/5.0</span>
+          </p>
+
           <p class="descrip">{{ course.description|truncatechars:100 }}</p>
           <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
         </div>
       </div>
     </div>
-    
+
     {% endfor %}
   </div>
-  
-  
+
+
 
   <!-- Repeat for other course levels if necessary -->
 
