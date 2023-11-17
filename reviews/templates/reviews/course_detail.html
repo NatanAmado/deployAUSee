@@ -1,0 +1,364 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<style>
+    /* Additional custom styles */
+    .review-container {
+        background-color: #1a1a1a; /* Dark background color */
+        border-radius: 8px;
+        padding: 20px;
+        color: #f1f1f1; /* Light text color for contrast */
+    }
+
+    .review-item {
+        background-color: #1a1a1a; /* Slightly lighter than container bg */
+        border-radius: 4px;
+        margin-bottom: 10px; /* Space between review items */
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0,0,0,.2); /* Stronger shadow for depth */
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between; /* Align major and date on opposite ends */
+        margin-bottom: 5px;
+    }
+
+    .review-major {
+        font-weight: bold;
+        color: #4b9cd3; /* A color that stands out */
+    }
+
+    .review-date {
+        font-size: 0.8em;
+        color: #cccccc;
+    }
+
+    .review-body {
+        border-top: 1px solid #444; /* Separator line */
+        padding-top: 10px;
+    }
+
+    .review-text {
+        font-size: 0.9em; /* Slightly smaller font size */
+        color: #f1f1f1;
+    }
+
+    .review-teacher {
+        margin-top: 10px;
+    }
+
+    
+
+    .btn-delete {
+        background-color: #e74c3c; /* Red button for delete action */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 0.8em;
+    }
+
+/* Add any additional styles needed for your star rating here */
+
+    .form-control, .btn-success {
+        border-radius: 0.25rem;
+    }
+    .btn-success {
+        width: 100%;
+        padding: 10px;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+    .reviews-scrollbox {
+        max-height: 700px; /* maximum height for the scrollable area */
+        overflow-y: auto; /* add scrollbar if content exceeds container height */
+        background-color: #000000;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 4px rgba(0,0,0,.1);
+        scroll-behavior: smooth;
+        scrollbar-width: thin;
+    }
+    .review-item {
+        
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+    /* Ensures the last item doesn't have a border-bottom */
+    .review-item:last-child {
+        border-bottom: none;
+    }
+
+    .review-container textarea {
+        width: 100%; 
+        height: 150px; 
+        padding: 10px; 
+        border: 1px solid #ccc; 
+        border-radius: 4px; 
+        box-sizing: border-box; 
+        resize: vertical; 
+    }
+
+    .helptext-container {      
+        text-align: center; 
+    }
+
+    .helptext-container p {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .list-unstyled .text-primary {
+        color: #dba309;
+    }
+
+    .review-major {
+        font-family: PF Fuel Grime;
+        font-size: 1.3em;
+        font-weight: 10;
+        
+        color: #ffffff; /* A color that stands out */
+    }
+
+    .mt-6 {
+        color: #dba309;
+        font-size: 1.2em;
+    }
+
+    .review-text {
+        font-size: 0.9em; /* Slightly smaller font size */
+        color: #f1f1f1;
+        font-weight: 100;
+    }
+
+    .btn-primary {
+        background-color: #dba309;
+        color: #000000;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 0.8em;
+    }
+
+    .btn-third {
+        background-color: #dba309;
+        color: #000000;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-top: -40px;
+        font-size: 1.0em;
+        
+    }
+
+    .btn-primary:hover {
+        background-color: #000000;
+        color: #dba309;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-top: 10px;
+        font-size: 0.8em;
+    }
+
+    
+    .star-rating  {
+        font-size: 1.2em;
+        color: #dba309;
+        font-weight: 100;
+        display: flex;
+        justify-content: right;
+    }
+
+    .container-main {
+        background-color: #000000;
+        color: #ffffff;
+        
+        font-weight: 100;
+    }
+
+    textarea[name="teacher_name"] {
+        height: 20px; /* Set the height you want */
+    }
+
+    .btn-primary {
+        margin-bottom: 5%;
+    }
+
+    .topicx {
+        font-family: PF Fuel Grime;
+        font-size: 1.5em;
+        font-weight: 10;
+        color: #dba309;
+        margin-left: 2.25%;
+        margin-top: 40px;
+    }
+
+   
+
+</style>
+
+<div class="container-main">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="display-4">{{ course.name }} <span class="text-muted">({{ course.code }})</span></h2>
+            <p><strong>Average Rating:</strong> {{ course.average_rating }} / 5.0</p>
+            <!-- ... truncated course description and button ... -->
+            <div id="courseSummaryShort">
+                <p>{{ course.description|truncatechars:800 }}.</p>
+                <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read More</button>
+            </div>
+            
+            <div id="courseSummaryFull" style="display: none;">
+                <p>{{ course.description }}</p>
+                <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read Less</button>
+            </div>
+            
+            <h3 class="topicx">Reviews:</h3>
+            
+            <div class="reviews-scrollbox">
+                <ul class="list-unstyled">
+                    <!-- Assuming each review is within a div with class 'review-item' inside the 'review-container' -->
+                    <div class="review-container">
+                        {% for review in reviews %}
+                        <div class="review-item">
+                            <div class="review-header">
+                                <span class="review-major">{{ review.user.major }} - {{ review.user.track }}</span>
+                                <span class="review-date">Posted on: {{ review.created_date }}</span>
+                            </div>
+                            <div class="review-body">
+                                <p class="review-text">{{ review.text }}</p>
+                                {% if review.teacher_name %}
+                                <div class="review-teacher">
+                                    <span>Teacher Name: {{ review.teacher_name }}</span>
+                                    <div class="star-rating">Teacher Rating: {{ review.teacher_quality }}</div>
+                                </div>
+                                {% endif %}
+                            </div>
+                                <p>
+                            {% if user.is_authenticated and review.user == user %}
+                                
+                                    <span>
+                                        <form method="post" class="review-actions">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="review_id" value="{{ review.id }}">
+                                            <button type="submit" name="delete_review" class="btn-delete">Delete</button>
+                                        </form>
+                                    </span>
+                                                                
+                            {% endif %}
+                                    <span class="star-rating" data-rating="{{ review.rating|floatformat:1 }}"></span>
+                                </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                </ul>
+            </div>
+            <!-- ... add review form and related scripts ... -->
+
+            {% if user.is_authenticated %}
+            <div class="container mt-5">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <div class="text-center mb-4">
+                            <button id="addReviewButton" class="btn btn-third" onclick="toggleReviewForm()">Add a Review</button>
+                        </div>
+                        <div id="reviewForm" class="review-container" style="display: none;">
+                            <h2 class="text-center mb-4">Add a Review</h2>
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit" class="btn btn-success">Submit Review</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="helptext-container">
+                <p>
+                  <a href="{% url 'users:login' %}?next={{ request.path }}">Login</a> or 
+                  <a href="{% url 'users:register' %}?next={{ request.path }}">Register</a> to add a review.
+                </p>
+            </div>              
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+
+         function toggleReviewForm() {
+              var form = document.getElementById("reviewForm");
+              if (form.style.display === "none") {
+                  form.style.display = "block";
+              } else {
+                  form.style.display = "none";
+              }
+          }
+
+          function toggleDescription() {
+            let shortSummary = document.getElementById("courseSummaryShort");
+            let fullSummary = document.getElementById("courseSummaryFull");
+            let toggleButton = document.getElementById("toggleSummary");
+
+            if (shortSummary.style.display === "none") {
+                shortSummary.style.display = "block";
+                fullSummary.style.display = "none";
+                toggleButton.innerText = "Read More";
+            } else {
+                shortSummary.style.display = "none";
+                fullSummary.style.display = "block";
+                toggleButton.innerText = "Read Less";
+            }
+        }
+
+
+          function updateStarRatings() {
+            // Select all elements with the class 'starRating'
+            const ratingElements = document.querySelectorAll('.star-rating');
+            ratingElements.forEach(el => {
+            let rating = parseFloat(el.getAttribute('data-rating'));
+            rating = Math.round(rating); // Round to the nearest whole number
+            el.innerHTML = ''; // Clear any existing stars
+            for (let i = 1; i <= rating; i++) {
+                if (i <= rating) {
+                el.innerHTML += '<span class="star">&#9733;</span>'; // Full star
+                } else {
+                el.innerHTML += '<span class="star gray">&#9733;</span>'; // Empty star
+                }
+            }
+            // If there is no rating (e.g., rating is NaN), clear the stars
+            if (isNaN(rating)) {
+                el.innerHTML = 'No ratings yet';
+                el.nextElementSibling.innerHTML = ''; // Clear the '/5.0'
+            }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', updateStarRatings);
+</script>
+
+{% endblock %}
+
+
