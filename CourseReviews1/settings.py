@@ -30,7 +30,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.ausee.courses', 'ausee.courses']
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
@@ -69,9 +69,9 @@ TEMPLATES = [
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
             os.path.join(BASE_DIR, 'CourseReviews1/templates'),
-            
+
             ],
-        
+
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
