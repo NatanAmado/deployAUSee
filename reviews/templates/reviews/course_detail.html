@@ -53,7 +53,7 @@
         margin-top: 10px;
     }
 
-    
+
 
     .btn-delete {
         background-color: #e74c3c; /* Red button for delete action */
@@ -95,7 +95,7 @@
         scrollbar-width: thin;
     }
     .review-item {
-        
+
         padding-bottom: 15px;
         margin-bottom: 15px;
     }
@@ -105,17 +105,17 @@
     }
 
     .review-container textarea {
-        width: 100%; 
-        height: 150px; 
-        padding: 10px; 
-        border: 1px solid #ccc; 
-        border-radius: 4px; 
-        box-sizing: border-box; 
-        resize: vertical; 
+        width: 100%;
+        height: 150px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        resize: vertical;
     }
 
-    .helptext-container {      
-        text-align: center; 
+    .helptext-container {
+        text-align: center;
     }
 
     .helptext-container p {
@@ -131,7 +131,7 @@
         font-family: PF Fuel Grime;
         font-size: 1.3em;
         font-weight: 10;
-        
+
         color: #ffffff; /* A color that stands out */
     }
 
@@ -166,7 +166,7 @@
         cursor: pointer;
         margin-top: -40px;
         font-size: 1.0em;
-        
+
     }
 
     .btn-primary:hover {
@@ -180,7 +180,7 @@
         font-size: 0.8em;
     }
 
-    
+
     .star-rating  {
         font-size: 1.2em;
         color: #dba309;
@@ -192,7 +192,7 @@
     .container-main {
         background-color: #000000;
         color: #ffffff;
-        
+
         font-weight: 100;
     }
 
@@ -213,7 +213,7 @@
         margin-top: 40px;
     }
 
-   
+
 
 </style>
 
@@ -227,14 +227,14 @@
                 <p>{{ course.description|truncatechars:800 }}.</p>
                 <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read More</button>
             </div>
-            
+
             <div id="courseSummaryFull" style="display: none;">
                 <p>{{ course.description }}</p>
                 <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read Less</button>
             </div>
-            
+
             <h3 class="topicx">Reviews:</h3>
-            
+
             <div class="reviews-scrollbox">
                 <ul class="list-unstyled">
                     <!-- Assuming each review is within a div with class 'review-item' inside the 'review-container' -->
@@ -249,14 +249,14 @@
                                 <p class="review-text">{{ review.text }}</p>
                                 {% if review.teacher_name %}
                                 <div class="review-teacher">
-                                    <span>Teacher Name: {{ review.teacher_name }}</span>
-                                    <div class="star-rating">Teacher Rating: {{ review.teacher_quality }}</div>
+                                    <span>Teacher Name: {{ review.teacher_name }} ~~</span>
+                                    <span>Teacher Rating: {{ review.teacher_quality }}</span>
                                 </div>
                                 {% endif %}
                             </div>
                                 <p>
                             {% if user.is_authenticated and review.user == user %}
-                                
+
                                     <span>
                                         <form method="post" class="review-actions">
                                             {% csrf_token %}
@@ -264,7 +264,7 @@
                                             <button type="submit" name="delete_review" class="btn-delete">Delete</button>
                                         </form>
                                     </span>
-                                                                
+
                             {% endif %}
                                     <span class="star-rating" data-rating="{{ review.rating|floatformat:1 }}"></span>
                                 </p>
@@ -297,10 +297,10 @@
             {% else %}
             <div class="helptext-container">
                 <p>
-                  <a href="{% url 'users:login' %}?next={{ request.path }}">Login</a> or 
+                  <a href="{% url 'users:login' %}?next={{ request.path }}">Login</a> or
                   <a href="{% url 'users:register' %}?next={{ request.path }}">Register</a> to add a review.
                 </p>
-            </div>              
+            </div>
             {% endif %}
         </div>
     </div>
@@ -355,6 +355,7 @@
             }
             });
         }
+
 
         document.addEventListener('DOMContentLoaded', updateStarRatings);
 </script>
