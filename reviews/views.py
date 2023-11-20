@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.db.models import Max, Min
 
 # Create your views here.
 
@@ -43,7 +44,7 @@ def course_detail(request, course_id):
     # Get the range of years for which reviews are available
     review_date_range = Review.objects.aggregate(start_year=Min('created_date__year'), end_year=Max('created_date__year'))
     years = range(review_date_range['start_year'], review_date_range['end_year'] + 1) if review_date_range['start_year'] else []
-    
+
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():
