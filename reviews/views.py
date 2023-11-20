@@ -36,12 +36,14 @@ def course_detail(request, course_id):
 
     year_filter = request.GET.get('year')
     if year_filter:
-        reviews = Review.objects.filter(course=course, created_date__year=year_filter)
+        reviews = Review.objects.filter(course=course, created_date__year=year_filter).order_by('-created_date')
     else:
-        reviews = Review.objects.filter(course=course)
+        reviews = Review.objects.filter(course=course).order_by('-created_date')
 
-    years = set(review.created_date.year for review in reviews)
-
+    # Get the range of years for which reviews are available
+    review_date_range = Review.objects.aggregate(start_year=Min('created_date__year'), end_year=Max('created_date__year'))
+    years = range(review_date_range['start_year'], review_date_range['end_year'] + 1) if review_date_range['start_year'] else []
+    
     if request.method == "POST":
         form = ReviewForm(request.POST)
         if form.is_valid():

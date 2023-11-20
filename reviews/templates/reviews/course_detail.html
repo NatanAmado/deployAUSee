@@ -239,6 +239,17 @@
             </div>
 
             <h3 class="topicx">Reviews:</h3>
+            <div class="year-filter">
+                <form method="get" action=".">
+                    <label for="year">Filter by Year:</label>
+                    <select name="year" onchange="this.form.submit()">
+                        <option value="">All Years</option>
+                        {% for year in available_years %}
+                            <option value="{{ year }}" {% if year|stringformat:"s" == current_year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
 
             <div class="reviews-scrollbox">
                 <ul class="list-unstyled">
