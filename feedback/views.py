@@ -21,3 +21,6 @@ def feedback(request):
 @login_required
 def about(request):
     return render(request, 'feedback/about.html')
+
+def form(request):
+    return render(request, 'feedback/googleform.html')

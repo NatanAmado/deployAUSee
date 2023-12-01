@@ -175,8 +175,13 @@
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'feedback:about' %}">About</a>
                 </li>
+                <!--
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'feedback:feedback' %}">Feedback</a>
+                </li>
+                -->
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'feedback:form' %}">Survey</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="https://donate.stripe.com/dR6g1o86T1UObXqcMM">Donate</a>
@@ -190,6 +195,9 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'users:register' %}">Register</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'feedback:form' %}">Survey</a>
                 </li>
                 {% endif %}
               </ul>

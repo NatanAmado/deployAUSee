@@ -9,6 +9,7 @@ app_name = 'feedback'
 urlpatterns = [
     path('about/', views.about, name='about'),
     path('feedback/', views.feedback, name='feedback'),
+    path('form/', views.form, name='form'),
     
 
 ]

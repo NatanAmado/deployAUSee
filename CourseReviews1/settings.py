@@ -30,7 +30,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['www.ausee.courses', 'ausee.courses']
+ALLOWED_HOSTS = ['www.ausee.courses', 'ausee.courses', '127.0.0.1']
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
