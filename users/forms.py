@@ -8,7 +8,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'password1', 'password2', 'major', 'track')  # Add any other fields you want in the registration form
+        fields = ('username', 'email', 'password1', 'password2', 'major', 'track')  # Add any other fields you want in the registration form
         widgets = {
             'username': forms.TextInput(attrs={'placeholder': 'This will be fully anonymous...'}),
             'major': forms.TextInput(attrs={'placeholder': 'Enter major'}),
