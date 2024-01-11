@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 from .models import MAJOR_CHOICES
+from django.core.exceptions import ValidationError
 
 class CustomUserCreationForm(UserCreationForm):
     major = forms.ChoiceField(choices=MAJOR_CHOICES)
@@ -17,3 +18,9 @@ class CustomUserCreationForm(UserCreationForm):
         help_texts = {
             'uservame': "Only you are able to see this."
         }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email.endswith('@student.auc.nl'):
+            raise ValidationError("Email must end with '@student.auc.nl'")
+        return email
