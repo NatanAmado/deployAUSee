@@ -50,9 +50,13 @@ class Review(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
     user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
-    
+    # upvotes and downvotes
 
+    def upvote_count(self):
+        return self.reviewvote_set.filter(is_upvote=True).count()
 
+    def downvote_count(self):
+        return self.reviewvote_set.filter(is_upvote=False).count()
 
     def save(self, *args, **kwargs):
         # Clean the review text before saving
@@ -61,3 +65,12 @@ class Review(models.Model):
 
     def __str__(self):
         return f"Review for {self.course.name}"
+    
+class ReviewVote(models.Model):
+    user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    is_upvote = models.BooleanField()  # True for upvote, False for downvote
+
+    class Meta:
+        unique_together = ['user', 'review']  # Ensures a user can only vote once per review
+

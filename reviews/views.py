@@ -1,4 +1,4 @@
-from .models import Course, Review
+from .models import Course, Review, ReviewVote
 from .forms import ReviewForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
@@ -57,11 +57,26 @@ def course_detail(request, course_id):
     else:
         form = ReviewForm()
 
-    if 'delete_review' in request.POST:
+    if 'vote' in request.POST:
         review_id = request.POST.get('review_id')
-        review = Review.objects.get(id=review_id, user=request.user)
-        review.delete()
+        review = get_object_or_404(Review, id=review_id)
+        vote_type = request.POST.get('vote')  # 'upvote' or 'downvote'
+        is_upvote = True if vote_type == 'upvote' else False
+
+        # Check if the user has already voted
+        existing_vote = ReviewVote.objects.filter(user=request.user, review=review).first()
+        if existing_vote:
+            # User has already voted, update vote if different
+            if existing_vote.is_upvote != is_upvote:
+                existing_vote.is_upvote = is_upvote
+                existing_vote.save()
+        else:
+            # Create a new vote
+            ReviewVote.objects.create(user=request.user, review=review, is_upvote=is_upvote)
+
         return HttpResponseRedirect(request.path_info)
+
+
     
     context = {
         'course': course,
@@ -72,3 +87,5 @@ def course_detail(request, course_id):
     }
 
     return render(request, 'reviews/course_detail.html', context)
+
+

@@ -257,34 +257,48 @@
                     <div class="review-container">
                         {% for review in reviews %}
                         <div class="review-item">
-                            <div class="review-header">
-                                <span class="review-major">{{ review.user.major }} - {{ review.user.track }}</span>
-                                <span class="review-date">Posted on: {{ review.created_date }}</span>
-                            </div>
-                            <div class="review-body">
-                                <p class="review-text">{{ review.text }}</p>
-                                {% if review.teacher_name %}
-                                <div class="review-teacher">
-                                    <span>Teacher Name: {{ review.teacher_name }} ~~</span>
-                                    <span>Teacher Rating: {{ review.teacher_quality }}</span>
+                            <span>
+                                <form method="post" class="review-actions">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="review_id" value="{{ review.id }}">
+                                    <button type="submit" name="vote" value="upvote" class="btn btn-success">Upvote ({{ review.upvote_count }})</button>
+                                    <button type="submit" name="vote" value="downvote" class="btn btn-danger">Downvote ({{ review.downvote_count }})</button>
+                                </form>                                
+                            </span>
+                            <span>
+                                <div class="review-header">
+                                    <span class="review-major">{{ review.user.major }} - {{ review.user.track }}</span>
+                                    <span class="review-date">Posted on: {{ review.created_date }}</span>
                                 </div>
-                                {% endif %}
-                            </div>
-                                <p>
-                            {% if user.is_authenticated and review.user == user %}
-
-                                    <span>
-                                        <form method="post" class="review-actions">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="review_id" value="{{ review.id }}">
-                                            <button type="submit" name="delete_review" class="btn-delete">Delete</button>
-                                        </form>
-                                    </span>
-
-                            {% endif %}
-                                    <span class="star-rating" data-rating="{{ review.rating|floatformat:1 }}"></span>
-                                    <span class="rating-holder"> {{ review.rating|floatformat:1 }}/5.0 </span> 
-                                </p>
+                                <div class="review-body">
+                                    <p class="review-text">{{ review.text }}</p>
+                                    {% if review.teacher_name %}
+                                    <div class="review-teacher">
+                                        <span>Teacher Name: {{ review.teacher_name }} ~~</span>
+                                        <span>Teacher Rating: {{ review.teacher_quality }}</span>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                    <p>
+    
+                                    {% if user.is_authenticated and review.user == user %}
+    
+                                        <span>
+                                            <form method="post" class="review-actions">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="review_id" value="{{ review.id }}">
+                                                <button type="submit" name="delete_review" class="btn-delete">Delete</button>
+                                            </form>
+                                        </span>
+    
+                                    {% endif %}
+    
+                                        <span class="star-rating" data-rating="{{ review.rating|floatformat:1 }}"></span>
+                                        <span class="rating-holder"> {{ review.rating|floatformat:1 }}/5.0 </span> 
+    
+                                    </p>
+                            </span>
+                            
                         </div>
                         {% endfor %}
                     </div>
