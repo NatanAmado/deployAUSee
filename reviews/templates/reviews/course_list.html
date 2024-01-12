@@ -15,11 +15,13 @@
     margin-bottom: 50px;
     color: #dba309;
   }
+
   .search-form {
     display: flex;
     justify-content: center;
     margin-bottom: 50px;
   }
+
   .search-input {
 
     padding: 10px;
@@ -27,6 +29,7 @@
     border-radius: 5px;
     margin-right: 5px;
   }
+
   .search-button {
     background-color: #000000;
     color: #dba309;
@@ -36,22 +39,27 @@
     cursor: pointer;
 
   }
+
   .search-button:hover {
     background-color: #dba309;
-    color: #000000;;
+    color: #000000;
+    ;
   }
+
   .course-level-header {
     margin-top: 30px;
     margin-bottom: 15px;
     text-align: center;
 
   }
+
   .row {
     display: flex;
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
   }
+
   .col-md-4 {
     flex: 0 0 33.333333%;
     max-width: 33.333333%;
@@ -60,6 +68,7 @@
     padding-left: 15px;
     box-sizing: border-box;
   }
+
   .card {
     background: #000000;
     border: 1px solid #e1e1e1;
@@ -71,13 +80,16 @@
     color: #ccc;
     max-width: 90%;
   }
+
   .card:hover {
     box-shadow: 0 0 10px #dba309;
   }
+
   .card-body {
     padding: 20px;
     text-align: center;
   }
+
   .card-title {
     margin-bottom: 15px;
     color: #dba309;
@@ -85,11 +97,13 @@
     font-size: 1.50rem;
     font-weight: 0;
   }
+
   .card-code {
     font-family: nitti-tywriter;
     font-weight: lighter;
     font-size: large;
   }
+
   .card a {
     text-decoration: none;
     color: #eeba2c;
@@ -107,6 +121,7 @@
 
 
   }
+
   .card a:hover {
     background-color: #dba309;
     color: #000000;
@@ -126,11 +141,13 @@
     margin-bottom: 10px;
     min-width: 50px;
   }
+
   .card p {
     padding: 2%;
     font-family: monospace;
     font-size: small;
   }
+
   .star-rating .star {
     color: gold;
     font-size: 20px;
@@ -215,14 +232,13 @@
       display: flex;
       justify-content: center;
     }
+
     .search-input,
     .search-button {
       width: 100%;
       margin: 5px 0;
     }
   }
-
-
 </style>
 
 <h2 class="title">Courses</h2>
@@ -261,7 +277,8 @@
           </p>
 
           <p class="descrip">{{ course.description|truncatechars:100 }}</p>
-          <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+          <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View
+            Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
         </div>
       </div>
     </div>
@@ -286,7 +303,8 @@
           </p>
 
           <p class="descrip">{{ course.description|truncatechars:100 }}</p>
-          <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+          <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View
+            Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
         </div>
       </div>
 
@@ -297,95 +315,95 @@
 
 
 
-  <div class="row">
-    {% for course in level_300_courses %}
-    <div class="col-md-4 mb-4">
-      <div class="card">
-        <div class="card-body">
-          <a class="level-holder">&nbsp;{{course.level}}&nbsp;</a>
-          <h5 class="card-title">{{ course.name }} </h5>
-          <h5 class="card-code">{{ course.code }}</h5>
-          <p>Average Rating:
-            <span class="starRating" data-rating="{{ course.average_rating|floatformat:1 }}"></span>
-            <span>{{ course.average_rating|floatformat:1 }}/5.0</span>
-          </p>
+    <div class="row">
+      {% for course in level_300_courses %}
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <div class="card-body">
+            <a class="level-holder">&nbsp;{{course.level}}&nbsp;</a>
+            <h5 class="card-title">{{ course.name }} </h5>
+            <h5 class="card-code">{{ course.code }}</h5>
+            <p>Average Rating:
+              <span class="starRating" data-rating="{{ course.average_rating|floatformat:1 }}"></span>
+              <span>{{ course.average_rating|floatformat:1 }}/5.0</span>
+            </p>
 
-          <p class="descrip">{{ course.description|truncatechars:100 }}</p>
-          <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <p class="descrip">{{ course.description|truncatechars:100 }}</p>
+            <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View
+              Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+          </div>
         </div>
       </div>
+
+      {% endfor %}
     </div>
 
-    {% endfor %}
+
+
+    <!-- Repeat for other course levels if necessary -->
+
   </div>
 
+  <!-- Inside your course loop -->
 
 
-  <!-- Repeat for other course levels if necessary -->
-
-</div>
-
-<!-- Inside your course loop -->
-
-
-<script>
-  function updateStarRatings() {
-    // Select all elements with the class 'starRating'
-    const ratingElements = document.querySelectorAll('.starRating');
-    ratingElements.forEach(el => {
-      let rating = parseFloat(el.getAttribute('data-rating'));
-      rating = Math.round(rating); // Round to the nearest whole number
-      el.innerHTML = ''; // Clear any existing stars
-      for (let i = 1; i <= rating; i++) {
-        if (i <= rating) {
-          el.innerHTML += '<span class="star">&#9733;</span>'; // Full star
-        } else {
-          el.innerHTML += '<span class="star gray">&#9733;</span>'; // Empty star
+  <script>
+    function updateStarRatings() {
+      // Select all elements with the class 'starRating'
+      const ratingElements = document.querySelectorAll('.starRating');
+      ratingElements.forEach(el => {
+        let rating = parseFloat(el.getAttribute('data-rating'));
+        rating = Math.round(rating); // Round to the nearest whole number
+        el.innerHTML = ''; // Clear any existing stars
+        for (let i = 1; i <= rating; i++) {
+          if (i <= rating) {
+            el.innerHTML += '<span class="star">&#9733;</span>'; // Full star
+          } else {
+            el.innerHTML += '<span class="star gray">&#9733;</span>'; // Empty star
+          }
         }
-      }
-      // If there is no rating (e.g., rating is NaN), clear the stars
-      if (isNaN(rating)) {
-        el.innerHTML = 'No ratings yet';
-        el.nextElementSibling.innerHTML = ''; // Clear the '/5.0'
-      }
-    });
-  }
-
-  function filterCourses(level) {
-    // Get all course cards
-    const cards = document.querySelectorAll('.card');
-    const buttons = document.querySelectorAll('.filter-btn');
-
-    // Remove active class from all buttons
-    buttons.forEach(button => {
-      button.classList.remove('active');
-    });
-
-    // Loop through all cards
-    cards.forEach(card => {
-      // Check if we are showing all courses or filtering by level
-      if (level === 'all') {
-        card.parentElement.style.display = ''; // Show all courses
-      } else {
-        // Show the card if it matches the level, hide it otherwise
-        const cardLevel = card.querySelector('.level-holder').textContent.trim();
-        if (cardLevel === level) {
-          card.parentElement.style.display = '';
-        } else {
-          card.parentElement.style.display = 'none';
+        // If there is no rating (e.g., rating is NaN), clear the stars
+        if (isNaN(rating)) {
+          el.innerHTML = 'No ratings yet';
+          el.nextElementSibling.innerHTML = ''; // Clear the '/5.0'
         }
-      }
-    });
-    document.querySelector(`.filter-btn[onclick*="'${level}'"]`).classList.add('active');
-  }
+      });
+    }
 
-// Initially show all courses
-filterCourses('all');
+    function filterCourses(level) {
+      // Get all course cards
+      const cards = document.querySelectorAll('.card');
+      const buttons = document.querySelectorAll('.filter-btn');
 
-  // Update all the ratings on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', updateStarRatings);
-</script>
+      // Remove active class from all buttons
+      buttons.forEach(button => {
+        button.classList.remove('active');
+      });
+
+      // Loop through all cards
+      cards.forEach(card => {
+        // Check if we are showing all courses or filtering by level
+        if (level === 'all') {
+          card.parentElement.style.display = ''; // Show all courses
+        } else {
+          // Show the card if it matches the level, hide it otherwise
+          const cardLevel = card.querySelector('.level-holder').textContent.trim();
+          if (cardLevel === level) {
+            card.parentElement.style.display = '';
+          } else {
+            card.parentElement.style.display = 'none';
+          }
+        }
+      });
+      document.querySelector(`.filter-btn[onclick*="'${level}'"]`).classList.add('active');
+    }
+
+    // Initially show all courses
+    filterCourses('all');
+
+    // Update all the ratings on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', updateStarRatings);
+  </script>
 
 
-{% endblock %}
-
+  {% endblock %}
