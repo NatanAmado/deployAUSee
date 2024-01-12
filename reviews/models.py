@@ -2,6 +2,7 @@ from django.db import models
 from profanity import profanity
 from users.models import CustomUser
 import math
+import math
 
 # Create your models here.
 
@@ -67,7 +68,7 @@ class Review(models.Model):
         
     def net_votes(self):
         x = self.upvote_count() - self.downvote_count()
-        return math.floor(x/2)
+        return math.ceil(x/2)
 
     def __str__(self):
         return f"Review for {self.course.name}"
