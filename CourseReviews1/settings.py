@@ -95,7 +95,7 @@ import dj_database_url
 DATABASES = {
     'default': dj_database_url.parse('postgresql://ovirandunu:C4xgWKzn6Noj@ep-twilight-dew-97778115.us-east-2.aws.neon.tech/neondb?sslmode=require')
 }
-
+ 
 
 # DATABASES = {
 #     'default': {
