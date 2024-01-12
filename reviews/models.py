@@ -1,6 +1,7 @@
 from django.db import models
 from profanity import profanity
 from users.models import CustomUser
+import math
 
 # Create your models here.
 
@@ -52,8 +53,6 @@ class Review(models.Model):
     user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
     # upvotes and downvotes
 
-    def net_votes(self):
-        return self.upvote_count() - self.downvote_count()
     
     def upvote_count(self):
         return self.reviewvote_set.filter(is_upvote=True).count()
@@ -65,6 +64,10 @@ class Review(models.Model):
         # Clean the review text before saving
         self.text = profanity.censor(self.text)
         super(Review, self).save(*args, **kwargs)
+        
+    def net_votes(self):
+        x = self.upvote_count() - self.downvote_count()
+        return math.floor(x/2)
 
     def __str__(self):
         return f"Review for {self.course.name}"
