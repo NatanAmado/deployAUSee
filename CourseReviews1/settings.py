@@ -90,12 +90,21 @@ WSGI_APPLICATION = 'CourseReviews1.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse('postgresql://ovirandunu:C4xgWKzn6Noj@ep-twilight-dew-97778115.us-east-2.aws.neon.tech/neondb?sslmode=require')
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db_backup.sqlite3',
+#     }
+# }
+
+
 
 
 # Password validation
