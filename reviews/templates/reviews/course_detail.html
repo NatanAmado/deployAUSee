@@ -8,218 +8,209 @@
 
 <style>
     /* Additional custom styles */
-    .review-container {
-        background-color: #1a1a1a; /* Dark background color */
-        border-radius: 8px;
-        padding: 20px;
-        color: #f1f1f1; /* Light text color for contrast */
-    }
+/* General Layout and Container Styles */
+.review-container {
+    background-color: #1a1a1a;
+    border-radius: 8px;
+    padding: 20px;
+    color: #f1f1f1;
+}
 
-    .review-item {
-        background-color: #1a1a1a; /* Slightly lighter than container bg */
-        border-radius: 4px;
-        margin-bottom: 10px; /* Space between review items */
-        padding: 15px;
-        box-shadow: 0 2px 4px rgba(0,0,0,.2); /* Stronger shadow for depth */
-    }
+.review-item {
+    background-color: #1a1a1a;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
 
-    .review-header {
-        display: flex;
-        justify-content: space-between; /* Align major and date on opposite ends */
-        margin-bottom: 5px;
-    }
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
 
-    .review-major {
-        font-weight: bold;
-        color: #4b9cd3; /* A color that stands out */
-    }
+.reviews-scrollbox {
+    max-height: 700px;
+    overflow-y: auto;
+    background-color: #000000;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+}
 
-    .review-date {
-        font-size: 0.8em;
-        color: #cccccc;
-    }
+.container-main {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: 100;
+}
 
-    .review-body {
-        border-top: 1px solid #444; /* Separator line */
-        padding-top: 10px;
-    }
+/* Typography and Text Styles */
+.review-major, .topicx {
+    font-family: PF Fuel Grime;
+    font-size: 1.3em;
+    font-weight: 10;
+    color: #ffffff;
+}
 
-    .review-text {
-        font-size: 0.9em; /* Slightly smaller font size */
-        color: #f1f1f1;
-    }
+.review-date {
+    font-size: 0.8em;
+    color: #cccccc;
+}
 
-    .review-teacher {
-        margin-top: 10px;
-    }
+.review-body {
+    border-top: 1px solid #444;
+    padding-top: 10px;
+}
 
+.review-text {
+    font-size: 0.9em;
+    color: #f1f1f1;
+    font-weight: 100;
+}
 
+.mt-6, .list-unstyled .text-primary {
+    color: #dba309;
+    font-size: 1.2em;
+}
 
-    .btn-delete {
-        background-color: #e74c3c; /* Red button for delete action */
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-size: 0.8em;
-    }
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
 
-/* Add any additional styles needed for your star rating here */
+/* Buttons and Form Elements */
+.btn-delete, .btn-primary, .btn-third {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-size: 0.8em;
+}
 
-    .form-control, .btn-success {
-        border-radius: 0.25rem;
-    }
-    .btn-success {
-        width: 100%;
-        padding: 10px;
-    }
-    .form-group {
-        margin-bottom: 15px;
-    }
-    label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        display: block;
-    }
-    .reviews-scrollbox {
-        max-height: 700px; /* maximum height for the scrollable area */
-        overflow-y: auto; /* add scrollbar if content exceeds container height */
-        background-color: #000000;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,.1);
-        scroll-behavior: smooth;
-        scrollbar-width: thin;
-    }
-    .review-item {
+.btn-primary {
+    background-color: #dba309;
+    color: #000000;
+    margin-bottom: 5%;
+}
 
-        padding-bottom: 15px;
-        margin-bottom: 15px;
-    }
-    /* Ensures the last item doesn't have a border-bottom */
-    .review-item:last-child {
-        border-bottom: none;
-    }
+.btn-primary:hover {
+    background-color: #000000;
+    color: #dba309;
+}
 
-    .review-container textarea {
-        width: 100%;
-        height: 150px;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-        resize: vertical;
-    }
-
-    .helptext-container {
-        text-align: center;
-    }
-
-    .helptext-container p {
-        display: inline-block;
-        margin: 0;
-    }
-
-    .list-unstyled .text-primary {
-        color: #dba309;
-    }
-
-    .review-major {
-        font-family: PF Fuel Grime;
-        font-size: 1.3em;
-        font-weight: 10;
-
-        color: #ffffff; /* A color that stands out */
-    }
-
-    .mt-6 {
-        color: #dba309;
-        font-size: 1.2em;
-    }
-
-    .review-text {
-        font-size: 0.9em; /* Slightly smaller font size */
-        color: #f1f1f1;
-        font-weight: 100;
-    }
-
-    .btn-primary {
-        background-color: #dba309;
-        color: #000000;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-size: 0.8em;
-    }
-
-    .btn-third {
-        background-color: #dba309;
-        color: #000000;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        margin-top: -40px;
-        font-size: 1.0em;
-
-    }
-
-    .btn-primary:hover {
-        background-color: #000000;
-        color: #dba309;
-        border: none;
-        border-radius: 4px;
-        padding: 5px 10px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-size: 0.8em;
-    }
+.form-control {
+    border-radius: 0.25rem;
+}
 
 
-    .star-rating  {
-        font-size: 1.2em;
-        color: #dba309;
-        font-weight: 100;
-        display: flex;
-        justify-content: right;
-    }
+.form-group {
+    margin-bottom: 15px;
+}
 
-    .container-main {
-        background-color: #000000;
-        color: #ffffff;
+.review-container textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    resize: vertical;
+}
 
-        font-weight: 100;
-    }
+textarea[name="teacher_name"] {
+    height: 20px;
+}
 
-    textarea[name="teacher_name"] {
-        height: 20px; /* Set the height you want */
-    }
+/* Star Rating and Other Specific Elements */
+.star-rating  {
+    font-size: 1.2em;
+    color: #dba309;
+    font-weight: 100;
+    display: flex;
+    justify-content: right;
+}
 
-    .btn-primary {
-        margin-bottom: 5%;
-    }
+.rating-holder {
+    display: flex;
+    justify-content: right;
+}
 
-    .topicx {
-        font-family: PF Fuel Grime;
-        font-size: 1.5em;
-        font-weight: 10;
-        color: #dba309;
-        margin-left: 2.25%;
-        margin-top: 40px;
-    }
+.helptext-container {
+    text-align: center;
+}
 
-    .rating-holder{
-        display: flex;
-        justify-content: right;
-    }
+.helptext-container p {
+    display: inline-block;
+    margin: 0;
+}
 
+/* Responsive Adjustments and Miscellaneous */
+.topicx {
+    font-size: 1.5em;
+    margin-left: 2.25%;
+    margin-top: 40px;
+}
 
+.review-item:last-child {
+    border-bottom: none;
+}
 
+.review-item {
+    display: flex; /* Use flexbox to lay out children */
+    align-items: flex-start; /* Align children at the top */
+    background-color: #1a1a1a;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    position: relative; /* Establish a positioning context */
+}
+.review-voting {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center buttons vertically */
+}
+
+.review-actions {
+    position: absolute; /* Position the buttons absolutely */
+    top: 50%; /* Position halfway down the container */
+    left: 10px; /* Space from the left edge of the review-item */
+    transform: translateY(-50%); /* Center align vertically */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */`
+    gap: 10px;
+}
+
+/* Upvote and Downvote Button Styles */
+.btn-upvote, .btn-downvote {
+    background-color: #4CAF50; /* Green for upvote */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px; /* Padding for larger click area */
+    margin-bottom: 5px; /* Space between buttons */
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
+    width:auto;
+}
+
+.btn-downvote {
+    background-color: #f44336; /* Red for downvote */
+}
+
+/* Hover effect for the buttons */
+.btn-upvote:hover, .btn-downvote:hover {
+    opacity: 0.8;
+}
 </style>
 
 <div class="container-main">
@@ -257,36 +248,44 @@
                     <div class="review-container">
                         {% for review in reviews %}
                         <div class="review-item">
-                            <div class="review-header">
-                                <span class="review-major">{{ review.user.major }} - {{ review.user.track }}</span>
-                                <span class="review-date">Posted on: {{ review.created_date }}</span>
-                            </div>
-                            <div class="review-body">
-                                <p class="review-text">{{ review.text }}</p>
-                                {% if review.teacher_name %}
-                                <div class="review-teacher">
-                                    <span>Teacher Name: {{ review.teacher_name }} ~~</span>
-                                    <span>Teacher Rating: {{ review.teacher_quality }}</span>
+                            <div class="review-content">
+                                <div class="review-header">
+                                    <span class="review-major">{{ review.user.major }} - {{ review.user.track }}</span>
+                                    <span class="review-date">Posted on: {{ review.created_date }}</span>
                                 </div>
-                                {% endif %}
+                                <div class="review-body">
+                                    <p class="review-text">{{ review.text }}</p>
+                                    {% if review.teacher_name %}
+                                    <div class="review-teacher">
+                                        <span>Teacher Name: {{ review.teacher_name }} ~~</span>
+                                        <span>Teacher Rating: {{ review.teacher_quality }}</span>
+                                    </div>
+                                    {% endif %}
+                                    <p>
+                                        {% if user.is_authenticated and review.user == user %}
+                                        <span>
+                                            <form method="post" class="review-actions-delete">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="review_id" value="{{ review.id }}">
+                                                <button type="submit" name="delete_review" class="btn-delete">Delete</button>
+                                            </form>
+                                        </span>
+                                        {% endif %}
+                                        <span class="star-rating" data-rating="{{ review.rating|floatformat:1 }}"></span>
+                                        <span class="rating-holder"> {{ review.rating|floatformat:1 }}/5.0 </span>
+                                    </p>
+                                </div>
                             </div>
-                                <p>
-                            {% if user.is_authenticated and review.user == user %}
-
-                                    <span>
-                                        <form method="post" class="review-actions">
-                                            {% csrf_token %}
-                                            <input type="hidden" name="review_id" value="{{ review.id }}">
-                                            <button type="submit" name="delete_review" class="btn-delete">Delete</button>
-                                        </form>
-                                    </span>
-
-                            {% endif %}
-                                    <span class="star-rating" data-rating="{{ review.rating|floatformat:1 }}"></span>
-                                    <span class="rating-holder"> {{ review.rating|floatformat:1 }}/5.0 </span> 
-                                </p>
+                            <div class="review-voting">
+                                <form method="post" class="review-actions">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="review_id" value="{{ review.id }}">
+                                    <button type="submit" name="vote" value="upvote" class="btn btn-upvote">Upvote ({{ review.upvote_count }})</button>
+                                    <button type="submit" name="vote" value="downvote" class="btn btn-downvote">Downvote ({{ review.downvote_count }})</button>
+                                </form>
+                            </div>
                         </div>
-                        {% endfor %}
+                        {% endfor %}                        
                     </div>
 
                 </ul>
