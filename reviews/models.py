@@ -52,6 +52,9 @@ class Review(models.Model):
     user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
     # upvotes and downvotes
 
+    def net_votes(self):
+        return self.upvote_count() - self.downvote_count()
+    
     def upvote_count(self):
         return self.reviewvote_set.filter(is_upvote=True).count()
 
