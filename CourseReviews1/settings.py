@@ -30,7 +30,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['www.ausee.courses', 'ausee.courses', '127.0.0.1']
+ALLOWED_HOSTS = ['www.ausee.courses', 'ausee.courses', '127.0.0.1', '.vercel.app']
 
 AUTH_USER_MODEL = 'users.CustomUser'
 
