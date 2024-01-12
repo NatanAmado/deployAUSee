@@ -1,1 +1,13 @@
 db.sqlite3
+
+# Python
+*.pyc
+*~
+__pycache__/
+*.pyo
+*.pyd
+.Python
+env/
+*.pot
+*.log
+*.egg-info/
