@@ -2,8 +2,6 @@ db.sqlite3
 
 # Python
 *.pyc
-*~
-_pycache_/
 *.pyo
 *.pyd
 .Python
