@@ -69,9 +69,9 @@ class Review(models.Model):
     def net_votes(self):
         x = self.upvote_count() - self.downvote_count()
         if x < 0:
-            return math.floor(x/2)
+            return math.floor(x)
         if x > 0:
-            return math.ceil(x/2)
+            return math.ceil(x)
         else:
             return 0
 

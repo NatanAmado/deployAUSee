@@ -69,7 +69,7 @@ def course_detail(request, course_id):
             # User has already voted, update vote if different
             if existing_vote.is_upvote != is_upvote:
                 existing_vote.is_upvote = is_upvote
-                existing_vote.save()
+                existing_vote.save()  
         else:
             # Create a new vote
             ReviewVote.objects.create(user=request.user, review=review, is_upvote=is_upvote)
