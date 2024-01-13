@@ -7,7 +7,7 @@ _pycache_/
 *.pyo
 *.pyd
 .Python
-env/
+
 *.pot
 *.log
 *.egg-info/
