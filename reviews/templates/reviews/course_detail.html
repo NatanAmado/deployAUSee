@@ -297,12 +297,12 @@
                                 </div>
                                 <div class="review-body">
                                     <p class="review-text">{{ review.text }}</p>
-                                    {% if review.teacher_name %}
+                                    <!-- {% if review.teacher_name %}
                                     <div class="review-teacher">
                                         <span>Teacher Name: {{ review.teacher_name }} ~~</span>
                                         <span>Teacher Rating: {{ review.teacher_quality }}</span>
                                     </div>
-                                    {% endif %}
+                                    {% endif %} -->
                                     <p>
                                         {% if user.is_authenticated and review.user == user %}
                                         <span>
