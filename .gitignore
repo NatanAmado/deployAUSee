@@ -9,3 +9,4 @@ db.sqlite3
 *.pot
 *.log
 *.egg-info/
+db.sqlite3
