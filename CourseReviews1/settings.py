@@ -40,6 +40,9 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 # Application definition
 
 INSTALLED_APPS = [
+    
+    'jazzmin',
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -171,3 +174,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'auseecourses@gmail.com'  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = 'innm uqcw yean ejti'  # Replace with the generated app password
+
+
+JAZZMIN_SETTINGS = {
+    'site_title': 'Ausee Courses',
+    'site_header': 'Ausee Courses',
+    
+}
