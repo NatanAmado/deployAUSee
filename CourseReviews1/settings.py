@@ -41,7 +41,7 @@ AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 INSTALLED_APPS = [
     
-    'jazzmin',
+    # 'jazzmin',
     
     'django.contrib.admin',
     'django.contrib.auth',
