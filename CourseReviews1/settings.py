@@ -176,8 +176,8 @@ EMAIL_HOST_USER = 'auseecourses@gmail.com'  # Replace with your Gmail address
 EMAIL_HOST_PASSWORD = 'innm uqcw yean ejti'  # Replace with the generated app password
 
 
-JAZZMIN_SETTINGS = {
-    'site_title': 'Ausee Courses',
-    'site_header': 'Ausee Courses',
+# JAZZMIN_SETTINGS = {
+#     'site_title': 'Ausee Courses',
+#     'site_header': 'Ausee Courses',
     
-}
+# }
