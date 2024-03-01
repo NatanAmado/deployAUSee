@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x)y9y!*l7=@+rgw$d+g_ea67rv76wq_%w(446wim^7gvx@%#ar'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 
@@ -149,6 +149,8 @@ USE_I18N = True
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/courses/'
+
+LOGIN_URL = '/users/login/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/

@@ -10,6 +10,7 @@ from django.db.models import Max, Min
 # Create your views here.
 
 
+
 def course_list(request):
     query = request.GET.get('q')
     if query:
