@@ -10,3 +10,6 @@ db.sqlite3
 *.log
 *.egg-info/
 db.sqlite3
+
+
+insert_statements_with_data.txt
