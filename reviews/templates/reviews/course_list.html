@@ -242,13 +242,18 @@
 </style>
 
 <h2 class="title">Courses</h2>
-<div class="container mt-5">
+<div class="container">
 
   <!-- Search Form -->
   <form method="get" action="{% url 'reviews:course_list' %}" class="search-form">
     <input type="text" name="q" class="search-input" placeholder="Search courses..." value="{{ request.GET.q }}">
     <button type="submit" class="search-button">Search</button>
   </form>
+
+  <!-- Position the "Add a course" link next to the search button -->
+  <div class="text-center mb-3">
+    <a href="{% url 'reviews:add_course' %}" class="add-course-link" style="font-size: 0.9em; color: #dba309; text-decoration: underline;">Add a course</a>
+  </div>
 
   <!-- Course Levels -->
 
@@ -260,8 +265,10 @@
     <button class="filter-btn level-300-btn" onclick="filterCourses('300')">300</button>
   </div>
 
-
-
+  <!-- Then add the empty results message AFTER the filters but before the course cards -->
+  <div id="no-results-message" style="display: none;" class="text-center my-4">
+    <p>Is your course not listed? <a href="{% url 'reviews:add_course' %}" style="color: #dba309; font-weight: bold;">Add it!</a></p>
+  </div>
 
   <div class="row">
     {% for course in level_100_courses %}
@@ -374,6 +381,7 @@
       // Get all course cards
       const cards = document.querySelectorAll('.card');
       const buttons = document.querySelectorAll('.filter-btn');
+      let visibleCount = 0;
 
       // Remove active class from all buttons
       buttons.forEach(button => {
@@ -385,16 +393,27 @@
         // Check if we are showing all courses or filtering by level
         if (level === 'all') {
           card.parentElement.style.display = ''; // Show all courses
+          visibleCount++;
         } else {
           // Show the card if it matches the level, hide it otherwise
           const cardLevel = card.querySelector('.level-holder').textContent.trim();
           if (cardLevel === level) {
             card.parentElement.style.display = '';
+            visibleCount++;
           } else {
             card.parentElement.style.display = 'none';
           }
         }
       });
+      
+      // Show or hide the "no results" message
+      const noResultsMessage = document.getElementById('no-results-message');
+      if (visibleCount === 0) {
+        noResultsMessage.style.display = 'block';
+      } else {
+        noResultsMessage.style.display = 'none';
+      }
+      
       document.querySelector(`.filter-btn[onclick*="'${level}'"]`).classList.add('active');
     }
 
@@ -403,6 +422,16 @@
 
     // Update all the ratings on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', updateStarRatings);
+    
+    // Also check for empty search results when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchQuery = "{{ request.GET.q }}";
+      const allCards = document.querySelectorAll('.card');
+      
+      if (searchQuery && allCards.length === 0) {
+        document.getElementById('no-results-message').style.display = 'block';
+      }
+    });
   </script>
 
 

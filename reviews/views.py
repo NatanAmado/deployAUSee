@@ -1,5 +1,5 @@
 from .models import Course, Review, ReviewVote
-from .forms import ReviewForm
+from .forms import ReviewForm, CourseForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from datetime import datetime
@@ -88,5 +88,22 @@ def course_detail(request, course_id):
     }
 
     return render(request, 'reviews/course_detail.html', context)
+
+
+@login_required
+def add_course(request):
+    if request.method == "POST":
+        form = CourseForm(request.POST)
+        if form.is_valid():
+            course = form.save()
+            return redirect('reviews:course_detail', course_id=course.id)
+    else:
+        form = CourseForm()
+    
+    context = {
+        'form': form,
+    }
+    
+    return render(request, 'reviews/add_course.html', context)
 
 
