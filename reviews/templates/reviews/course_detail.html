@@ -4,10 +4,7 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-;
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
     /* Additional custom styles */
@@ -264,13 +261,26 @@
             <!-- ... truncated course description and button ... -->
             <div id="courseSummaryShort">
                 <p>{{ course.description|truncatechars:800 }}.</p>
-                <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read More</button>
+                <div class="d-flex align-items-center">
+                    <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read More</button>
+                </div>
             </div>
 
             <div id="courseSummaryFull" style="display: none;">
                 <p>{{ course.description }}</p>
-                <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read Less</button>
+                <div class="d-flex align-items-center">
+                    <button id="toggleSummary" class="btn btn-primary" onclick="toggleDescription()">Read Less</button>
+                </div>
             </div>
+
+            <!-- Add the report button after both summary sections -->
+            {% if not user_reported %}
+            <div class="mt-2">
+                <button type="button" class="btn btn-link text-danger p-0" id="reportCourseBtn" style="text-decoration: none;">
+                    Not a real course?
+                </button>
+            </div>
+            {% endif %}
 
             <h3 class="topicx">Reviews:</h3>
             <div class="year-filter">
@@ -431,5 +441,108 @@
 
     document.addEventListener('DOMContentLoaded', updateStarRatings);
 </script>
+
+<!-- Toast for confirmation -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="reportToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header">
+            <strong class="me-auto">Course Report</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            Thank you for your report. We'll review this course.
+        </div>
+    </div>
+</div>
+
+<!-- Add this JavaScript to handle the button clicks -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const voteRealBtn = document.getElementById('voteRealBtn');
+  const voteNotRealBtn = document.getElementById('voteNotRealBtn');
+  const reportToast = new bootstrap.Toast(document.getElementById('reportToast'));
+  const toastMessage = document.getElementById('toastMessage');
+  const modalElement = document.getElementById('courseRealityModal');
+  
+  // Make sure the modal is properly initialized
+  const courseRealityModal = new bootstrap.Modal(modalElement);
+  
+  function submitVote(voteType) {
+    // Send the vote via AJAX
+    fetch("{% url 'reviews:report_course' course.id %}", {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: JSON.stringify({ vote: voteType })
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Close the modal immediately
+      courseRealityModal.hide();
+      
+      // Show the toast with the response message
+      toastMessage.textContent = data.message;
+      reportToast.show();
+      
+      // If the vote was successful, remove the button
+      if (data.success) {
+        const reportBtn = document.getElementById('reportCourseBtn');
+        if (reportBtn) {
+          reportBtn.remove();
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      
+      // Close the modal
+      courseRealityModal.hide();
+      
+      // Show error toast
+      toastMessage.textContent = 'An error occurred. Please try again.';
+      reportToast.show();
+    });
+  }
+  
+  voteRealBtn.addEventListener('click', function() {
+    submitVote('real');
+  });
+  
+  voteNotRealBtn.addEventListener('click', function() {
+    submitVote('not_real');
+  });
+  
+  // Make sure the button correctly opens the modal
+  const reportBtn = document.getElementById('reportCourseBtn');
+  if (reportBtn) {
+    reportBtn.addEventListener('click', function() {
+      courseRealityModal.show();
+    });
+  }
+});
+</script>
+
+<!-- Add this after the report button but before the toast -->
+<!-- Modal for asking if the course is real -->
+<div class="modal fade" id="courseRealityModal" tabindex="-1" aria-labelledby="courseRealityModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="courseRealityModalLabel">Course Verification</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Is "{{ course.name }}" a real course at your institution?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" id="voteRealBtn">Yes, it's real</button>
+        <button type="button" class="btn btn-danger" id="voteNotRealBtn">No, it's not real</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

@@ -242,7 +242,7 @@
 </style>
 
 <h2 class="title">Courses</h2>
-<div class="container mt-5">
+<div class="container">
 
   <!-- Search Form -->
   <form method="get" action="{% url 'reviews:course_list' %}" class="search-form">
@@ -250,18 +250,33 @@
     <button type="submit" class="search-button">Search</button>
   </form>
 
+  <!-- Position the "Add a course" link next to the search button -->
+  <div class="text-center mb-3">
+    <a href="{% url 'reviews:add_course' %}" class="add-course-link" style="font-size: 0.9em; color: #dba309; text-decoration: underline;">Add a course</a>
+  </div>
+
   <!-- Course Levels -->
 
   <!-- Navigation Buttons -->
   <div class="course-filters">
-    <button class="filter-btn all-courses-btn" onclick="filterCourses('all')">All Courses</button>
+    <button class="filter-btn all-courses-btn active" onclick="filterCourses('all')">All Courses</button>
     <button class="filter-btn level-100-btn" onclick="filterCourses('100')">100</button>
     <button class="filter-btn level-200-btn" onclick="filterCourses('200')">200</button>
     <button class="filter-btn level-300-btn" onclick="filterCourses('300')">300</button>
   </div>
 
+  <!-- Major Filters -->
+  <div class="course-filters" style="margin-top: -20px;">
+    <button class="filter-btn major-btn" onclick="filterByMajor('HUM')" style="background-color: #1A1A1A; color: #FF9966;">Humanities</button>
+    <button class="filter-btn major-btn" onclick="filterByMajor('ACC')" style="background-color: #1A1A1A; color: #66CCFF;">Academic Core</button>
+    <button class="filter-btn major-btn" onclick="filterByMajor('SSC')" style="background-color: #1A1A1A; color: #CC99FF;">Social Sciences</button>
+    <button class="filter-btn major-btn" onclick="filterByMajor('SCI')" style="background-color: #1A1A1A; color: #99FF99;">Sciences</button>
+  </div>
 
-
+  <!-- Then add the empty results message AFTER the filters but before the course cards -->
+  <div id="no-results-message" style="display: none;" class="text-center my-4">
+    <p>Is your course not listed? <a href="{% url 'reviews:add_course' %}" style="color: #dba309; font-weight: bold;">Add it!</a></p>
+  </div>
 
   <div class="row">
     {% for course in level_100_courses %}
@@ -331,7 +346,6 @@
             <p class="descrip">{{ course.description|truncatechars:100 }}</p>
             <a href="{% url 'reviews:course_detail' course.id %}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;View
               Reviews&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-          </div>
         </div>
       </div>
 
@@ -373,10 +387,17 @@
     function filterCourses(level) {
       // Get all course cards
       const cards = document.querySelectorAll('.card');
-      const buttons = document.querySelectorAll('.filter-btn');
+      const levelButtons = document.querySelectorAll('.filter-btn:not(.major-btn)');
+      const majorButtons = document.querySelectorAll('.major-btn');
+      let visibleCount = 0;
 
-      // Remove active class from all buttons
-      buttons.forEach(button => {
+      // Remove active class from all level buttons
+      levelButtons.forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      // Reset major buttons (they're a separate filter)
+      majorButtons.forEach(button => {
         button.classList.remove('active');
       });
 
@@ -385,17 +406,76 @@
         // Check if we are showing all courses or filtering by level
         if (level === 'all') {
           card.parentElement.style.display = ''; // Show all courses
+          visibleCount++;
         } else {
           // Show the card if it matches the level, hide it otherwise
           const cardLevel = card.querySelector('.level-holder').textContent.trim();
           if (cardLevel === level) {
             card.parentElement.style.display = '';
+            visibleCount++;
           } else {
             card.parentElement.style.display = 'none';
           }
         }
       });
+      
+      // Show or hide the "no results" message
+      const noResultsMessage = document.getElementById('no-results-message');
+      if (visibleCount === 0) {
+        noResultsMessage.style.display = 'block';
+      } else {
+        noResultsMessage.style.display = 'none';
+      }
+      
       document.querySelector(`.filter-btn[onclick*="'${level}'"]`).classList.add('active');
+    }
+    
+    function filterByMajor(major) {
+      // Get all course cards
+      const cards = document.querySelectorAll('.card');
+      const levelButtons = document.querySelectorAll('.filter-btn:not(.major-btn)');
+      const majorButtons = document.querySelectorAll('.major-btn');
+      let visibleCount = 0;
+
+      // Remove active class from all buttons
+      levelButtons.forEach(button => {
+        button.classList.remove('active');
+      });
+      
+      majorButtons.forEach(button => {
+        button.classList.remove('active');
+      });
+
+      // Loop through all cards
+      cards.forEach(card => {
+        // Get the course code
+        const courseCode = card.querySelector('.card-code').textContent.trim();
+        
+        // Extract the major code from the course code
+        let courseMajor = '';
+        if (courseCode.includes('HUM')) courseMajor = 'HUM';
+        else if (courseCode.includes('ACC')) courseMajor = 'ACC';
+        else if (courseCode.includes('SSC')) courseMajor = 'SSC';
+        else if (courseCode.includes('SCI')) courseMajor = 'SCI';
+        
+        // Show the card if it matches the major, hide it otherwise
+        if (courseMajor === major) {
+          card.parentElement.style.display = '';
+          visibleCount++;
+        } else {
+          card.parentElement.style.display = 'none';
+        }
+      });
+      
+      // Show or hide the "no results" message
+      const noResultsMessage = document.getElementById('no-results-message');
+      if (visibleCount === 0) {
+        noResultsMessage.style.display = 'block';
+      } else {
+        noResultsMessage.style.display = 'none';
+      }
+      
+      document.querySelector(`.major-btn[onclick*="'${major}'"]`).classList.add('active');
     }
 
     // Initially show all courses
@@ -403,7 +483,16 @@
 
     // Update all the ratings on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', updateStarRatings);
+    
+    // Also check for empty search results when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchQuery = "{{ request.GET.q }}";
+      const allCards = document.querySelectorAll('.card');
+      
+      if (searchQuery && allCards.length === 0) {
+        document.getElementById('no-results-message').style.display = 'block';
+      }
+    });
   </script>
-
 
   {% endblock %}

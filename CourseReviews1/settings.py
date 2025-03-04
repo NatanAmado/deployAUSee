@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-x)y9y!*l7=@+rgw$d+g_ea67rv76wq_%w(446wim^7gvx@%#ar'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True  # Change to False for production
 
 
 
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -183,3 +184,7 @@ EMAIL_HOST_PASSWORD = 'innm uqcw yean ejti'  # Replace with the generated app pa
 #     'site_header': 'Ausee Courses',
     
 # }
+
+# Add this configuration for WhiteNoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+

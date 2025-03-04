@@ -3,6 +3,9 @@ from profanity import profanity
 from users.models import CustomUser
 import math
 import math
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render
+from django.http import JsonResponse
 
 # Create your models here.
 
@@ -20,6 +23,7 @@ class Course(models.Model):
     code = models.CharField(max_length=50)
     description = models.TextField(blank=True, null=True)
     level = models.PositiveSmallIntegerField(choices=LEVEL_CHOICES, default=100)
+    archived = models.BooleanField(default=False)
 
 
     def average_rating(self):
@@ -40,6 +44,21 @@ class Course(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def report_count(self):
+        return self.reports.count()
+    
+    def real_votes(self):
+        return self.reports.filter(vote='real').count()
+    
+    def not_real_votes(self):
+        return self.reports.filter(vote='not_real').count()
+    
+    def vote_difference(self):
+        return self.not_real_votes() - self.real_votes()
+        
+    def should_be_archived(self):
+        return self.vote_difference() >= 5 and not self.archived
     
 profanity.set_censor_characters('****')
 
@@ -85,4 +104,49 @@ class ReviewVote(models.Model):
 
     class Meta:
         unique_together = ['user', 'review']  # Ensures a user can only vote once per review
+
+class CourseReport(models.Model):
+    VOTE_CHOICES = [
+        ('real', 'Course is real'),
+        ('not_real', 'Course is not real'),
+    ]
+    
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reports')
+    user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
+    vote = models.CharField(max_length=10, choices=VOTE_CHOICES, default='not_real')
+    reason = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        unique_together = ('course', 'user')  # Prevent multiple reports from same user
+        
+    def __str__(self):
+        return f"Report for {self.course.name} by {self.user.username}: {self.get_vote_display()}"
+
+@login_required
+def report_course(request, course_id):
+    course = get_object_or_404(Course, id=course_id)
+    
+    if request.method == "POST":
+        form = CourseReportForm(request.POST)
+        if form.is_valid():
+            # Check if user already reported this course
+            if not CourseReport.objects.filter(course=course, user=request.user).exists():
+                report = form.save(commit=False)
+                report.course = course
+                report.user = request.user
+                report.save()
+                
+                # Check if course should be archived
+                if course.should_be_archived():
+                    course.archived = True
+                    course.save()
+                
+                return JsonResponse({'success': True, 'message': 'Thank you for your report.'})
+            else:
+                return JsonResponse({'success': False, 'message': 'You have already reported this course.'})
+    else:
+        form = CourseReportForm()
+    
+    return render(request, 'reviews/report_course.html', {'form': form, 'course': course})
 
