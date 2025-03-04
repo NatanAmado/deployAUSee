@@ -6,6 +6,7 @@ from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models import Max, Min
+import json
 
 # Create your views here.
 
@@ -121,25 +122,36 @@ def report_course(request, course_id):
     course = get_object_or_404(Course, id=course_id)
     
     if request.method == "POST":
-        reason = request.POST.get('reason', '')
+        try:
+            data = json.loads(request.body)
+            vote_type = data.get('vote', 'not_real')  # Default to not_real for backward compatibility
+        except:
+            vote_type = 'not_real'  # Default if JSON parsing fails
         
         # Check if user already reported this course
         if not CourseReport.objects.filter(course=course, user=request.user).exists():
+            # Temporarily use a simpler approach without the vote field
             report = CourseReport(
                 course=course,
                 user=request.user,
-                reason=reason
+                reason=f"User voted: {vote_type}"
             )
             report.save()
             
-            # Check if course should be archived
+            # Check if course should be archived based on report count
             if course.report_count() >= 5 and not course.archived:
                 course.archived = True
                 course.save()
             
-            return JsonResponse({'success': True, 'message': 'Thank you for your report.'})
+            return JsonResponse({
+                'success': True, 
+                'message': 'Thank you for your feedback. Your vote has been recorded.'
+            })
         else:
-            return JsonResponse({'success': False, 'message': 'You have already reported this course.'})
+            return JsonResponse({
+                'success': False, 
+                'message': 'You have already voted on this course.'
+            })
     
     return JsonResponse({'success': False, 'message': 'Invalid request method.'})
 

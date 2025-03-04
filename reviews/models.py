@@ -47,9 +47,18 @@ class Course(models.Model):
     
     def report_count(self):
         return self.reports.count()
+    
+    def real_votes(self):
+        return self.reports.filter(vote='real').count()
+    
+    def not_real_votes(self):
+        return self.reports.filter(vote='not_real').count()
+    
+    def vote_difference(self):
+        return self.not_real_votes() - self.real_votes()
         
     def should_be_archived(self):
-        return self.report_count() >= 5 and not self.archived
+        return self.vote_difference() >= 5 and not self.archived
     
 profanity.set_censor_characters('****')
 
@@ -97,8 +106,14 @@ class ReviewVote(models.Model):
         unique_together = ['user', 'review']  # Ensures a user can only vote once per review
 
 class CourseReport(models.Model):
+    VOTE_CHOICES = [
+        ('real', 'Course is real'),
+        ('not_real', 'Course is not real'),
+    ]
+    
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='reports')
     user = models.ForeignKey('users.CustomUser', on_delete=models.CASCADE)
+    vote = models.CharField(max_length=10, choices=VOTE_CHOICES, default='not_real')
     reason = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -106,7 +121,7 @@ class CourseReport(models.Model):
         unique_together = ('course', 'user')  # Prevent multiple reports from same user
         
     def __str__(self):
-        return f"Report for {self.course.name} by {self.user.username}"
+        return f"Report for {self.course.name} by {self.user.username}: {self.get_vote_display()}"
 
 @login_required
 def report_course(request, course_id):
