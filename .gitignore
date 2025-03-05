@@ -9,7 +9,27 @@ db.sqlite3
 *.pot
 *.log
 *.egg-info/
-db.sqlite3
 
+# Local database files
+*.sqlite3
+*.db
+*.sql
+*.dump
+
+# Database backups
+*.bak
+*.backup
+
+# Local database migrations
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Environment-specific database configuration
+.env.local
+.env.development.local
 
 insert_statements_with_data.txt
+
+# Local settings
+local_settings.py
+.env
