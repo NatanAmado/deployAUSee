@@ -33,3 +33,5 @@ insert_statements_with_data.txt
 # Local settings
 local_settings.py
 .env
+schema.py
+feedback/.DS_Store
